@@ -6,7 +6,7 @@ class Receta(ABC):
         self.nombre = nombre  # nombre
         self.ingredientes = ingredientes  # ingredientes
         self.pasos = pasos  # pasos
-
+    
     @abstractmethod
     def mostrar(self):
         print("Ingredientes:")
@@ -22,19 +22,50 @@ class Receta(ABC):
 class RecetasVegetarianas(Receta):
     def mostrar(self):
         print(f"Receta vegetariana: {self.nombre}")
-        Receta.mostrar()
+        Receta.mostrar(self)
 
 
 # Clase para recetas no vegetarianas
 class RecetasNoVegetarianas(Receta):
     def mostrar(self):
         print(f"Receta NO vegetariana: {self.nombre}")
-        Receta.mostrar()
+        Receta.mostrar(self)
 
 
 
 # Clase con utilidades del restaurante
 class Utilidades:
+    lista_recetas = []
+    def crear_receta():
+        cantidad_recetas = int(input("Dime la cantidad de recetas que quieres añadir: "))
+        contador_recetas = 0
+        
+        while contador_recetas < cantidad_recetas:
+            lista_ingredientes = []
+            lista_pasos = []
+            tipo_receta = input("Si es una receta vegetariana escribe v, si no es vegetariana escribe nv: ")
+            nombre = input("Dime el nombre de la receta: ")
+            cantidad_ingredientes = int(input("Dime cuantos ingredientes quieres meter: "))
+            contador_ingredientes = 0
+            while contador_ingredientes <  cantidad_ingredientes:
+                ingrediente = input("Dime el ingrediente: ")
+                lista_ingredientes.append(ingrediente)
+                contador_ingredientes += 1
+            cantidad_pasos = int(input("Dime la cantidad de pasos que tiene: "))
+            contador_pasos = 0
+            while contador_pasos < cantidad_pasos:
+                paso = input("Dime el paso: ")
+                lista_pasos.append(paso)
+                contador_pasos += 1
+            contador_recetas += 1
+            if tipo_receta == "v":
+                receta = RecetasVegetarianas(nombre, lista_ingredientes, lista_pasos)
+            elif tipo_receta == "nv":
+                receta = RecetasVegetarianas(nombre, lista_ingredientes, lista_pasos)
+            else:
+                print("No válido")
+            Utilidades.lista_recetas.append(receta)
+
     @staticmethod
     def imprimir_receta(receta):
         print("====================================")
@@ -48,24 +79,13 @@ class Utilidades:
 
 # Función principal
 def principal():
-    receta1 = RecetasVegetarianas("Ensalada César", ["lechuga", "queso", "pan tostado", "salsa"], ["Lavar", "Mezclar", "Servir"])
-    receta2 = RecetasNoVegetarianas("Pollo al horno", ["pollo", "patatas", "ajo", "aceite"], ["Preparar", "Hornear", "Servir"])
-    
-    # Duplicación de código al imprimir
-    print("== Mostrar recetas ==")
-    Utilidades.imprimir_receta(receta1)
-    Utilidades.imprimir_receta(receta2)
-
-    # Código duplicado para mostrar ingredientes
-    print("Ingredientes de Ensalada César:")
-    for ingrediente in receta1.ingredientes:
-        print(f"* {ingrediente}")
-    
-    print("Ingredientes de Pollo al horno:")
-    for ingrediente in receta2.ingredientes:
-        print(f"* {ingrediente}")
+    Utilidades.crear_receta()
+    print("MOSTRAR RECETAS")
+    for receta in Utilidades.lista_recetas:
+        Utilidades.imprimir_receta(receta)
 
 
 # Ejecutar el programa
 if __name__ == "__main__":
     principal()
+
